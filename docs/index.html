@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>波浪下跌段圖鑑</title>
+<meta name="description" content="用艾略特波浪理論回看台股、費半、那斯達克 100、標普 500 自 2000 年以來的主要下跌段，並回測「在當下就推算低點」準不準。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body>
+<header class="wrap hero">
+  <p class="kicker">ELLIOTT WAVE · 2000 – <span id="asof">—</span></p>
+  <h1>波浪下跌段圖鑑</h1>
+  <p class="lede">把台股、費半、那斯達克 100、標普 500 自 2000 年以來每一段主要下跌，用同一套規則數浪、量費波南希比率，
+    再回測一件事：<strong>跌到一半的時候，用當下的資料推算低點，到底準不準？</strong></p>
+</header>
+
+<main class="wrap">
+  <section>
+    <div class="sec-head">
+      <h2>現在的位置</h2>
+      <p class="muted" id="notes-asof"></p>
+    </div>
+    <p class="headline" id="headline"></p>
+    <div class="cards" id="now-cards"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>歷年下跌段</h2>
+      <div class="tabs" id="tabs" role="tablist"></div>
+    </div>
+    <p class="muted" id="ix-desc"></p>
+    <div class="chart" id="overview" style="height:340px"></div>
+    <div class="table-wrap">
+      <table class="eps" id="eps-table">
+        <thead><tr>
+          <th>高點</th><th>低點</th><th class="r">跌幅</th><th class="r">天數</th>
+          <th>最佳數法</th><th class="r">符合度</th><th>關鍵比率</th><th class="r">回檔前波</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="detail">
+    <div class="sec-head">
+      <h2 id="d-title">—</h2>
+      <div class="seg" id="d-mode">
+        <button data-k="abc">A-B-C</button><button data-k="impulse">五波</button>
+      </div>
+    </div>
+    <p class="muted" id="d-sub"></p>
+    <div class="chart" id="d-chart" style="height:440px"></div>
+    <div class="legend-row">
+      <span><i class="sw sw-wave"></i>波浪標記</span>
+      <span><i class="sw sw-p1"></i>即時推算 C = A</span>
+      <span><i class="sw sw-p2"></i>即時推算 C = 1.618×A</span>
+      <span><i class="sw sw-low"></i>實際低點</span>
+    </div>
+    <div class="detail-grid">
+      <div>
+        <h3>規則與比率檢查</h3>
+        <ul class="checks" id="d-checks"></ul>
+        <div id="d-targets"></div>
+      </div>
+      <div>
+        <h3>當下推算的低點（不偷看未來）</h3>
+        <p class="muted small">每確認一個反彈高點 B，就用「從高點到當時的最低點」當 A 波，推算 C = A 與 C = 1.618×A（以幅度% 計）。</p>
+        <div class="table-wrap"><table class="cps" id="d-cps">
+          <thead><tr><th>推算日</th><th class="r">B 高點</th><th class="r">C = A</th><th class="r">誤差</th><th class="r">C = 1.618A</th><th class="r">誤差</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>回測：當下推算低點有多準</h2></div>
+    <p class="muted">只看「低點出現之前」就發出的推算。每一點是一次推算；橫線是 ±5% 的命中區。</p>
+    <div class="stats" id="bt-stats"></div>
+    <div class="chart" id="bt-chart" style="height:360px"></div>
+    <p class="note" id="bt-note"></p>
+  </section>
+
+  <section class="method">
+    <h2>方法</h2>
+    <ol>
+      <li><b>下跌段</b>：收盤價轉折（zigzag）找出的高點，到「收復該高點」或「從低點翻倍」之前的最低收盤。門檻：台股、NDX、S&amp;P 500 跌 15%，SOX 波動大用 25%。S&amp;P 500 目前只跌 8%，所以「現在的位置」另外拿近一年高點計算。</li>
+      <li><b>數浪</b>：在下跌段內部由粗到細找轉折（12% → 2%），窮舉所有符合規則的 A-B-C 與五波組合。五波必須遵守三條硬規則：第 2 波不超過起點、第 3 波不是最短、第 4 波不與第 1 波重疊。</li>
+      <li><b>符合度</b>：A-B-C 看 C/A 有多接近 0.618 / 1 / 1.618 / 2.618，以及 B 波反彈是否落在 38.2%–78.6%；五波看第 3、5 波和第 1 波的比率，以及第 2、4 波的回檔深度。1.00 代表每一項都剛好卡在費波南希比率上。</li>
+      <li><b>回檔前波</b>：跌幅除以「高點前三年最低點到高點」的漲幅。</li>
+      <li><b>即時推算</b>：反彈高點以 zigzag 確認的那一天為準（門檻是下跌段門檻的 35%），只用到那天為止的收盤價，而且 B 波要反彈 A 波三成以上才算數。</li>
+    </ol>
+    <p class="disclaimer">數浪本身就很主觀，同一段走勢常常有好幾種合理的數法；演算法挑出「最工整」的那一種，不代表當時的市場真的照這個結構走。這是技術結構的整理與回測，不是投資建議。資料來源：Yahoo Finance 日收盤價。</p>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <span id="built"></span> · <a href="https://github.com/GarfieldHuang/elliott-wave-declines">原始碼</a>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
