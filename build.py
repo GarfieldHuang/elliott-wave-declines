@@ -58,6 +58,10 @@ def load(path):
             continue
         dates.append(day)
         c.append(v)
+    # 盤中抓到的最後一根是即時價，不是收盤價，先丟掉
+    reg = d["meta"].get("currentTradingPeriod", {}).get("regular", {})
+    if reg and reg.get("start", 0) <= time.time() < reg.get("end", 0) and d["timestamp"][-1] >= reg["start"]:
+        dates.pop(); c.pop()
     return dates, c
 
 
