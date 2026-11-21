@@ -1,5 +1,5 @@
 {
- "built": "2026-11-20T14:36+00:00",
+ "built": "2026-11-21T03:19+00:00",
  "indices": [
   {
    "id": "TWII",
@@ -13,24 +13,24 @@
    "id": "SOX",
    "name": "費城半導體指數",
    "en": "PHLX Semiconductor (SOX)",
-   "last_date": "2026-11-19",
-   "last": 9419.72,
+   "last_date": "2026-11-20",
+   "last": 8408.59,
    "episodes": 10
   },
   {
    "id": "NDX",
    "name": "那斯達克 100",
    "en": "Nasdaq-100 (NDX)",
-   "last_date": "2026-11-19",
-   "last": 26517.05,
+   "last_date": "2026-11-20",
+   "last": 25028.98,
    "episodes": 14
   },
   {
    "id": "GSPC",
    "name": "標普 500",
    "en": "S&P 500",
-   "last_date": "2026-11-19",
-   "last": 7175.83,
+   "last_date": "2026-11-20",
+   "last": 6910.39,
    "episodes": 8
   }
  ]
